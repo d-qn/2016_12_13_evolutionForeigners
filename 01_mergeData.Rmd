@@ -1,0 +1,223 @@
+---
+title: "Merge data"
+author: "Duc-Quang Nguyen | swissinfo.ch"
+date: " 2016"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    theme: simplex
+---
+
+# Data
+
+* Depuis 2010: [Permanent and non permanent resident population by canton, sex, residence permit, age class and citizenship](https://www.pxweb.bfs.admin.ch/Selection.aspx?px_language=en&px_db=px-x-0103010000_101&px_tableid=px-x-0103010000_101%5Cpx-x-0103010000_101.px&px_type=PX) [Complete px cube](https://www.pxweb.bfs.admin.ch/DownloadFile.aspx?file=px-x-0103010000_101)
+  * the whole dataset is huge. STAT-TAB query
+      * Select all years
+      * Select only Switzerland
+      * Population type BOTH/ALL
+      * Sexe NULL
+      * Autorisation de résidence NULL
+      * Classe d'âge NULL
+      * Nationalité select ALL
+  * File saved as comma delimited [px-x-0103010000_101.csv](data/px-x-0103010000_101.csv)
+
+* 1850-2009: [Population résidante permanente et non permanente selon le sexe et la nationalité par pays](https://www.bfs.admin.ch/bfs/fr/home/statistiques/catalogues-banques-donnees.assetdetail.hs-f-01.01.01.03.html)
+   * **Warning: Turkey is considered a European country**
+
+```{r setup, include=FALSE}
+output_base.file <- "input/merged_foreigners"
+outputSwissFor_base.file <- "input/merged_Swisssforeigners"
+
+natpop.file1 <- "data/hs-e-01.01.01.03.xls" #data/hs-f-01.01.01.03.csv"
+natpop.file2 <- "data/px-x-0103010000_101.csv"
+
+# cluster ex-yougoslavia countries
+Yugoslavia <- c('Yugoslavia', 'Serbia and Montenegro', 'Serbia', 'Montenegro', 
+                'Kosovo', 'Croatia', 'Bosnia and Herzegovina', 'Macedonia')
+# cluster NA nationalities
+Unknown <- c('No indication', 'Stateless', 'Not attributable according to current borders')
+
+library(readr)
+library(readxl)
+library(tidyr)
+library(dplyr)
+library(magrittr)
+library(countrycode)
+library(ggplot2)
+library(scales)
+library(swiMap)
+library(swiTheme)
+```
+
+## Load historical data
+
+```{r shape 1850-2009 xls data}
+data.read <- read_excel(natpop.file1, skip  = 2)
+
+# drop gender rows
+data.read <- data.read[!unlist(data.read[,1]) %in% c("Male", "Female"),]
+# drop footer
+data.read <- data.read[!is.na(unlist(data.read[,1])),]
+
+# drop trailing number), i.e. 3)
+rown <- gsub("\\d\\)", "", unlist(data.read[,1]))
+# drop trailing space
+rown <- gsub(" $", "", rown)
+
+# rename country/regions
+rown <- gsub("Stateless/No indication", "Unknown", rown)
+rown <- gsub("Austalia/Oceania", "Oceania", rown)
+
+# remove 3 dots by NA
+data.read <- data.read[,-c(1)]
+d1 <- apply(data.read, 2, function(l) as.numeric(gsub("...", "", l, fixed = T))) %>% as.data.frame()
+
+colnames(d1) <- as.numeric(colnames(d1))
+d1 <- cbind(nationality = rown, d1)
+
+## make the data long
+d1 <- tidyr::gather(d1, year, value, -nationality)
+d1$year <- as.numeric(d1$year)
+
+## checks
+# Total == Swiss + Foreigner
+check.diff <- d1 %>% filter(nationality == "Total") %>% select(value) %>% unlist() - 
+  ((d1 %>% filter(nationality == "Swiss") %>% select(value) %>% unlist()) + 
+     (d1 %>% filter(nationality == "Foreigner") %>% select(value) %>% unlist())
+  )
+
+if(!all(check.diff == 0)) {
+  warning("Sum of foreigners + Swiss is always equal to Total")
+  print(check.diff)
+}
+
+nat.group <- c('Total', 'Swiss', 'EU/EFTA country', 'Europe', 'Foreigner')
+
+# Foreigner = everything (except Total,  Swiss, 'EU/EFTA country', 'Europe')
+check.diff <- d1 %>% filter(nationality == 'Foreigner') %>% select(value) %>% unlist() - 
+  (d1 %>% filter(!nationality %in% nat.group) %>% 
+     group_by(year) %>% summarise(value = sum(value, na.rm = T)) %>% 
+     ungroup() %>% select(value) %>% unlist())
+if(!all(check.diff == 0)) {
+  warning("Sum of nationality (- some) not equal to Foreigner")
+  print(check.diff)
+}
+
+## Merge & drop nationalities
+#levels(d1$nationality)
+
+d1.g1 <- d1 %>% filter(nationality %in% nat.group)
+# discard groups
+d1 <- d1 %>% filter(!nationality %in% nat.group)
+
+# Merge ex-Yougoslavia nationalities
+yugo <- d1 %>% filter(nationality %in% Yugoslavia) %>%
+  group_by(year) %>% summarise(value = sum(value, na.rm = T)) %>%
+  ungroup()
+d1 <- rbind(
+  d1 %>% filter(!nationality %in% Yugoslavia),
+  cbind(nationality = 'Ex-Yugoslavia', yugo)
+) %>% arrange(year)
+
+# rename America to Americas (to be consistent with countrycode continent)
+d1$nationality <- as.character(d1$nationality)
+d1[which(d1$nationality == "America"), 'nationality'] <- "Americas"
+#d1$nationality<- factor(d1$nationality)
+
+# check
+chkb <- d1 %>% group_by(year) %>% summarise(value = sum(value, na.rm = T)) %>%
+  select(value) %>% unlist()
+chka <- d1.g1 %>% filter(nationality == "Foreigner") %>% select(value) %>% unlist()
+
+stopifnot((chka - chkb) == check.diff)
+```
+
+## Data from 2010
+
+```{r wrangle data from 2010 onwards}
+data.read <- read_tsv(natpop.file2, skip = 2, locale = locale(encoding = "latin1"))
+
+# drop & merge pop type
+data.read %<>% select(-Canton, -`Population type`) %>%
+  rename(Total = `Citizenship - Total`, Swiss = Switzerland, year = Year)
+# make data long
+d2 <- data.read %>% gather(nationality, value,-year) %>%
+  group_by(year, nationality) %>% summarise(value = sum(value, na.rm = T)) %>%
+  ungroup() %>% arrange(year, desc(value))
+# remove NA rown
+
+# filter out Swiss and Total numbers
+d2.g2 <- d2 %>% filter(nationality %in% c('Total', 'Swiss'))
+d2 %<>% filter(!nationality %in% c('Total', 'Swiss'))
+
+d2.g2 <- rbind(d2.g2,
+          cbind(
+            nationality = "Foreigner", 
+            d2 %>% group_by(year) %>% summarise(value = sum(value, na.rm = T)) %>% ungroup()
+          ) 
+      ) %>% arrange(year)
+
+# check total is a sum of all other nationality
+check.diff <- d2.g2 %>% filter(nationality == "Total") %>% select(value) %>% unlist() -
+  (
+    d2.g2 %>% filter(nationality != "Total") %>% group_by(year) %>%
+      summarise(value = sum(value)) %>% select(value) %>% ungroup() %>% unlist()
+  )
+stopifnot(check.diff == 0)
+
+## Create similar groups to d1
+fnat <- as.character(unique(d1$nationality))
+
+d2$iso2 <- countrycode(d2$nationality, "country.name", "iso2c")
+d2$continent <- countrycode(d2$nationality, "country.name", "continent")
+# hack fix for Taiwan
+d2[which(d2$iso2 == "TW"), 'continent'] <- 'Asia'
+
+d2.bak <- d2
+
+d2$nat <- d2$nationality
+# relabel nationality for Ex-Yugoslavia and Unknown
+idx <- which(d2$nationality %in% Yugoslavia | d2$iso2 %in% na.omit(countrycode(Yugoslavia, "country.name", "iso2c")))
+cat("\n", d2[idx,'nat'] %>% unlist(use.names = F) %>% unique(), "\t these countries about to be merged!\n")
+d2[idx,'nat'] <- "Ex-Yugoslavia"
+idx <- which(d2$nationality %in% Unknown | (is.na(d2$iso2) & d2$nat != "Ex-Yugoslavia"))
+cat("\n", d2[idx,'nat'] %>% unlist(use.names = F) %>% unique(), "\t these countries about to be merged!\n")
+d2[idx, 'nat'] <- "Unknown"
+
+# get the country if in subset country otherwise get the continent
+nat <- ifelse(d2$nat %in% fnat, d2$nat, d2$continent)
+
+# rename Europe to "Other European country" to be consistent with the historical data
+nat <- ifelse(nat == "Europe", "Other European country", nat)
+
+stopifnot(fnat %in% nat)
+stopifnot(!any(is.na(nat)))
+stopifnot(length(nat) == nrow(d2))
+
+# recompute value by nat
+d2$nat <- nat
+d2 %<>% group_by(nat, year) %>%
+  summarise(value = sum(value)) %>% 
+  ungroup() %>% rename(nationality = nat)
+
+dd <- bind_rows(d1, d2)
+outfile <-  paste0(output_base.file, "_", paste0(range(dd$year), collapse = "_"), ".csv")
+cat("\n", "The merged timeseries to be written at: ", outfile)
+write.csv(dd, file = outfile)
+```
+
+```{r save the merged timeseries for Swiss & total foreigners}
+d1.g1 %<>% filter(nationality %in% c('Foreigner', 'Swiss'))
+d2.g2 %<>% filter(nationality %in% c('Foreigner', 'Swiss'))
+
+dg <- suppressWarnings (bind_rows(d1.g1, d2.g2 %>% select(nationality, year, value)))
+dg %<>% spread(nationality, value)
+#dg$Foreigner / (dg$Swiss + dg$Foreigner)
+
+outfile2 <-  paste0(outputSwissFor_base.file, "_", paste0(range(dd$year), collapse = "_"), ".csv")
+
+cat("\n", "The merged timeseries of Swiss and foreigners to be written at: ", outfile2)
+write.csv(dg, file = outfile2)
+
+```
