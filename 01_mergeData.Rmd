@@ -29,6 +29,8 @@ output:
 output_base.file <- "input/merged_foreigners"
 outputSwissFor_base.file <- "input/merged_Swisssforeigners"
 
+testPlot <- T
+
 natpop.file1 <- "data/hs-e-01.01.01.03.xls" #data/hs-f-01.01.01.03.csv"
 natpop.file2 <- "data/px-x-0103010000_101.csv"
 
@@ -37,6 +39,7 @@ Yugoslavia <- c('Yugoslavia', 'Serbia and Montenegro', 'Serbia', 'Montenegro',
                 'Kosovo', 'Croatia', 'Bosnia and Herzegovina', 'Macedonia')
 # cluster NA nationalities
 Unknown <- c('No indication', 'Stateless', 'Not attributable according to current borders')
+
 
 library(readr)
 library(readxl)
@@ -204,7 +207,7 @@ d2 %<>% group_by(nat, year) %>%
 dd <- bind_rows(d1, d2)
 outfile <-  paste0(output_base.file, "_", paste0(range(dd$year), collapse = "_"), ".csv")
 cat("\n", "The merged timeseries to be written at: ", outfile)
-write.csv(dd, file = outfile)
+write.csv(dd, file = outfile, row.names = F)
 ```
 
 ```{r save the merged timeseries for Swiss & total foreigners}
@@ -218,6 +221,16 @@ dg %<>% spread(nationality, value)
 outfile2 <-  paste0(outputSwissFor_base.file, "_", paste0(range(dd$year), collapse = "_"), ".csv")
 
 cat("\n", "The merged timeseries of Swiss and foreigners to be written at: ", outfile2)
-write.csv(dg, file = outfile2)
+write.csv(dg, file = outfile2, row.names = F)
+```
 
+
+```{r test plot, echo = F}
+if(testPlot) {
+  ggplot(data = dd) + geom_area(aes(year, value, group = nationality, fill = nationality)) + swi_theme()
+  
+  ggplot(data = dd) + geom_area(aes(year, value, group = nationality, fill = nationality)) + facet_wrap(~nationality) + swi_theme()
+  
+
+}
 ```
