@@ -162,12 +162,11 @@ annotations &lt;- paste0(annotations, collapse = &quot; %&gt;% &quot;)
   
 # streamgraph layers are stacked based on the levels
 
-  sg &lt;- streamgraph(ddd, nationality, value, year, right = 17, left = 40, height = 600, bottom = 29) %&gt;%
+  sg &lt;- streamgraph(ddd, nationality, value, year, right = 10, left = 64, height = 730, bottom = 29) %&gt;%
     sg_fill_manual(values = nationality$col)
   
   sga &lt;- eval(parse(text = paste0(&quot; sg %&gt;% &quot;, annotations)))
-  sga &lt;- sga %&gt;% sg_legend(show = T)
-  
+
   sga$sizingPolicy$browser$defaultWidth &lt;- &quot;100%&quot;
   sga$sizingPolicy$browser$padding &lt;- 1
   #sg
@@ -197,7 +196,7 @@ annotations &lt;- paste0(annotations, collapse = &quot; %&gt;% &quot;)
           div(id = &quot;footer&quot;, HTML(txt['footer', lang])),
           div(id = &quot;cite&quot;, HTML(source)),
           HTML(iframeresizer)
-      )), file = paste0(&quot;streamgraph_&quot;, lang, &quot;.html&quot;), libdir = &quot;js&quot;
+      )), file = paste0(&quot;streamgraph_foreignersEvolution_&quot;, lang, &quot;.html&quot;), libdir = &quot;js&quot;
   )
   swi_libWidget_overwrite()</code></pre>
 </div>
