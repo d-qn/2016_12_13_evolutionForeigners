@@ -45,55 +45,49 @@ library(swiRcharts)
 library(rCharts)
 library(streamgraph)
 
+sg_trbl <- c(7, 10, 29, 64)
+
 nationality <- data.frame(
   key =     c("Africa",  "Americas", "Asia",    'Oceania', "Unknown",   "Austria", "Turkey",  "Spain",   "France",   "Portugal", "Ex-Yugoslavia", "Germany", "Italy", "Other European country"),
-  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#2b2b55", "#b3cccc", "#345284", "#303e6c",  "#3f6699",  "#9db6c2",       "#708dad",  "#5879a3","#87a1b8"),
-  colannot = c('#844F2F', '#ddeeee', '#5a2626', "white", "white",       "white"   , '#e0ebeb' , '#283F65', '#C9D6D6', '#304E75', '#788C95',       '#566C85', 'white', '#677B8D'),
-  x =       c(2010,      1995,        1998,      NA,         NA,         NA,        1992,      1970,      1995,        1996,      1990,            1907,      1967,     1990 ),
-  y =       c(5000,        375000,     435000,   NA,         NA,         NA,        575000,    714000,    720000,      810000,    1100000,       1030000,     1250000,  2000900),
-  size =    c('0.8em',   '0.8em',      '0.8em',  NA,        NA,          NA,      '0.72em',   '0.72em',   '0.72em',   '0.85em',  '0.95em',         '1.2em',      '1.2em',   '1em' )
+  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#2b2b55", "#b3cccc", "#345284", "#303e6c",  "#afc0d0",  "#9db6c2",       "#708dad",  "#5879a3","#87a1b8"),
+  colannot = c('#844F2F', '#bbdddd', '#5a2626', "white", "white",       "#5555aa"   , '#e0ebeb' , '#283F65', '#C9D6D6', '#304E75', '#788C95',       '#2F343B', 'white', '#36404a'),
+  x =       c(1995,      1994,        1998,      NA,         NA,         1907,        1992,      1970,      1995,        1996,      1986,            1907,      1967,     1975 ),
+  y =       c(300000,        375000,     435000,   NA,         NA,         790000,        575000,    714000,    720000,      810000,    1050000,       1030000,     1250000,  1750000),
+  size =    c('0.8em',   '0.8em',      '0.8em',  NA,        NA,          '0.75em',      '0.72em',   '0.72em',   '0.72em',   '0.85em',  '0.95em',         '1.3em',      '1.3em',   '1em' )
 , stringsAsFactors = F)
 
+annotation <- data.frame(x = as.Date("1910-01-01"), label = "sadfdsaf asdfsdaf")
 
-#eu.colors <- c('#2b2b55','#303e6c','#345284','#3f6699','#5879a3','#708dad','#87a1b8','#9db6c2','#b3cccc')
-# brewer_pal(palette = "PuBu")(9)
-# Darken color for stream labelling -> https://gist.github.com/Jfortin1/72ef064469d1703c6b30
-# darken <- function(color, factor=1.6){
-#     col <- col2rgb(color)
-#     col <- col/factor
-#     col <- rgb(t(col), maxColorValue=255)
-#     col
-# }
-# nationality$colannot <- sapply(nationality$col, darken)
-#write.csv(nationality[,1], file = "temp.csv", row.names = F)
 ```
 
 ```{r streamgraph}
 data.read <- read.csv(foreigner.file)
 txt <- loadTranslation(translation.file)
 
-ddd <- data.read
-
-stopifnot(nrow(nationality) == length(unique(ddd$nationality)), all(ddd$nationality %in% nationality$key))
-
-ddd$nationality <- factor(ddd$nationality, levels = nationality$key) #nationality$key[nationality$key != 'Unknown']) #
-#ddd %<>% filter(nationality != "Unknown")
-
-annot <- nationality %>% filter(!is.na(x))
-annotations <- apply(annot, 1, function(l) {
-  paste0("sg_annotate(label = '", l['key'], "', x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "', size = '",  l['size'], "')")
-})
-annotations <- paste0(annotations, collapse = " %>% ")
-
-  lang <- 'EN'
+for(lang in colnames(txt)) {
+  ddd <- data.read
   
-# streamgraph layers are stacked based on the levels
+  stopifnot(nrow(nationality) == length(unique(ddd$nationality)), all(ddd$nationality %in% nationality$key))
+  ddd$nationality <- factor(txt[as.character(ddd$nationality), lang], levels = txt[nationality$key, lang])
+  stopifnot(!any(is.na(ddd$nationality)))
+  #ddd$nationality <- factor(ddd$nationality, levels = nationality$key) 
+  #ddd %<>% filter(nationality != "Unknown")
 
-  sg <- streamgraph(ddd, nationality, value, year, right = 10, left = 64, height = 730, bottom = 29) %>%
-    sg_fill_manual(values = nationality$col)
+  annot <- nationality %>% filter(!is.na(x))
+  annot$key <- txt[annot$key, lang]
   
-  sga <- eval(parse(text = paste0(" sg %>% ", annotations)))
-
+  annotations <- apply(annot, 1, function(l) {
+    paste0("sg_annotate(label = '", l['key'], "', x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "', size = '",  l['size'], "')")
+  })
+  annotations <- paste0(annotations, collapse = " %>% ")
+  
+  ## 1st streamgraph : foreigners layers are stacked based on the levels
+  sg <- streamgraph(ddd, nationality, value, year, top = sg_trbl[1], right = sg_trbl[2], bottom = sg_trbl[3], left = sg_trbl[4], height = 570) %>%
+    sg_fill_manual(values = nationality$col) %>%
+    sg_axis_x(tick_interval = 20)
+  sga <- eval(parse(text = paste0(" sg %>% ", annotations))) 
+ # sga <- sga %>% sg_annotate(label = txt['descr', lang], x = as.Date("1855-01-01"), y = 2000000, color = 'black', size = "18")
+  
   sga$sizingPolicy$browser$defaultWidth <- "100%"
   sga$sizingPolicy$browser$padding <- 1
   #sg
@@ -105,27 +99,58 @@ annotations <- paste0(annotations, collapse = " %>% ")
   iend <- max(grep("</head>", html.code))
   header <- html.code[istart:iend-1]
 
+  ## 2nd streamgraph share foreigners  
+  data.for <- read.csv(swiss.file)
+  data.for$shareFor <- round((data.for$Foreigner / (data.for$Foreigner + data.for$Swiss)), 3)
+  # make the data long
+  data.for %<>% select(year, shareFor)
+  data.for$group <- 'share'
+  
+  sgb <- streamgraph(data.for, group, shareFor, year, 
+                     top = 6, right = sg_trbl[2], bottom = -2, left = sg_trbl[4], 
+                     height = 110, offset = "zero", interactive = F) %>% 
+    sg_fill_manual(values = c('#66717f', 'red')) %>%
+    sg_axis_y(tick_format = ",%") %>%
+    sg_annotate(label = "Share of foreigners in the total population", x = as.Date("1852-01-01"), y = 0.22, color = '#2F343B', size = 15)
+  
+  #sgb
+  sgb$sizingPolicy$browser$defaultWidth <- "100%"
+  sgb$sizingPolicy$browser$padding <- 1
+  saveWidget(sgb, file = "streamgraph2_tmp.html", selfcontained = FALSE, libdir = "js")
+  html.grabbed2 <- grab_widgetHTML("streamgraph2_tmp.html")
+  
+  html.code2 <- html.grabbed2[['html']]
+  istart2 <- min(grep("script", html.code))
+  iend2 <- max(grep("</head>", html.code))
+  header2 <- html.code[istart:iend-1]
+
+  ## wrap into HTML page
   source <- paste0(
     txt["source", lang], ": ", txt["source.name", lang],
     " | ", txt["code", lang], ": ", htmlLink("https://github.com/hrbrmstr/streamgraph", "streamgraphR"),
-    " | ", htmlLink("https://twitter.com/duc_qn", "@duc_qn"), " | swissinfo.ch ")
+    " | ", htmlLink("https://twitter.com/duc_qn", "@duc_qn"), " | ", 
+    htmlLink("http://www.swissinfo.ch", "swissinfo.ch"))
   
   save_html(
     tags$html(
      tags$head(
-       HTML(paste0("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>",
+       HTML(paste0("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>",
        paste0(header, collapse =""), collapse =""))),
           tags$body(
           h2(HTML(txt['main.title', lang])),
           div(class = "descr", HTML(paste0(txt['descr', lang], " <em>", txt['descr2', lang], "</em>"))),
           h3(HTML(txt['h3', lang])),
           div(class = "container", HTML(html.code[html.grabbed[['istart']]:html.grabbed[['iend']]])),
+          div(class = "container", HTML(html.code2[html.grabbed2[['istart']]:html.grabbed2[['iend']]])),
           div(id = "footer", HTML(txt['footer', lang])),
           div(id = "cite", HTML(source)),
           HTML(iframeresizer)
       )), file = paste0("streamgraph_foreignersEvolution_", lang, ".html"), libdir = "js"
   )
-  swi_libWidget_overwrite()
+  swi_libWidget_overwrite()  
+}
+  
 
+```
 
 ```
