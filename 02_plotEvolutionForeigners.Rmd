@@ -18,6 +18,10 @@ output: html_document
 * La Suisse est l'un des pays qui compte la plus forte proportion d'étrangers (24,6% en 2015) sur son territoire. Seuls quelques cas particuliers, tels que les pays pétroliers ou des Cités-États comme le Luxembourg, présentent des pourcentages encore plus élevés que la Suisse.
 * plus de 80% des étrangers établis en Suisse proviennent de pays européens. Les ressortissants d'Allemagne, d'Italie, du Portugal et de France constituent à eux seuls près de la moitié des étrangers résidant en Suisse.
 
+## Note about streamgraphR
+
+* Streams can be ordered with passing a sorted factor categorey. However streamgraph's manual colors is based on the alphabetical order of the categories
+
 
 ```{r setup, include=FALSE, message=F}
 foreigner.file <-  'input/merged_foreigners_1850_2015.csv'
@@ -49,8 +53,8 @@ sg_trbl <- c(7, 10, 29, 64)
 
 nationality <- data.frame(
   key =     c("Africa",  "Americas", "Asia",    'Oceania', "Unknown",   "Austria", "Turkey",  "Spain",   "France",   "Portugal", "Ex-Yugoslavia", "Germany", "Italy", "Other European country"),
-  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#2b2b55", "#b3cccc", "#345284", "#303e6c",  "#afc0d0",  "#9db6c2",       "#708dad",  "#5879a3","#87a1b8"),
-  colannot = c('#844F2F', '#bbdddd', '#5a2626', "white", "white",       "#5555aa"   , '#e0ebeb' , '#283F65', '#C9D6D6', '#304E75', '#788C95',       '#2F343B', 'white', '#36404a'),
+  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#2b2b55", "#b3cccc", "#5879a3", "#303e6c",  "#87a1b8",  "#9db6c2",       "#708dad",  "#345284","#d9e6f2"),
+  colannot = c('#844F2F', '#bbdddd', '#5a2626', "white", "white",       "#ddddee"   , '#334d4d' , '#283F65', '#C9D6D6', '#304E75', '#3b535e',       'white', 'white', '#36404a'),
   x =       c(1995,      1994,        1998,      NA,         NA,         1907,        1992,      1970,      1995,        1996,      1986,            1907,      1967,     1975 ),
   y =       c(300000,        375000,     435000,   NA,         NA,         790000,        575000,    714000,    720000,      810000,    1050000,       1030000,     1250000,  1750000),
   size =    c('0.8em',   '0.8em',      '0.8em',  NA,        NA,          '0.75em',      '0.72em',   '0.72em',   '0.72em',   '0.85em',  '0.95em',         '1.3em',      '1.3em',   '1em' )
@@ -70,20 +74,23 @@ for(lang in colnames(txt)) {
   stopifnot(nrow(nationality) == length(unique(ddd$nationality)), all(ddd$nationality %in% nationality$key))
   ddd$nationality <- factor(txt[as.character(ddd$nationality), lang], levels = txt[nationality$key, lang])
   stopifnot(!any(is.na(ddd$nationality)))
-  #ddd$nationality <- factor(ddd$nationality, levels = nationality$key) 
-  #ddd %<>% filter(nationality != "Unknown")
 
   annot <- nationality %>% filter(!is.na(x))
   annot$key <- txt[annot$key, lang]
   
   annotations <- apply(annot, 1, function(l) {
-    paste0("sg_annotate(label = '", l['key'], "', x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "', size = '",  l['size'], "')")
+   # paste0("sg_annotate(label = '", l['key'], "', x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "')")
+    paste0("sg_annotate(label = \"", l['key'], "\", x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "', size = '",  l['size'], "')")
   })
   annotations <- paste0(annotations, collapse = " %>% ")
   
+  # order the colors to assume alphabetical ordering of the categories
+  col.idx <- match(sort(txt[nationality$key, lang]), txt[nationality$key, lang])
+  
+  
   ## 1st streamgraph : foreigners layers are stacked based on the levels
   sg <- streamgraph(ddd, nationality, value, year, top = sg_trbl[1], right = sg_trbl[2], bottom = sg_trbl[3], left = sg_trbl[4], height = 550) %>%
-    sg_fill_manual(values = nationality$col) %>%
+    sg_fill_manual(values = nationality$col[col.idx]) %>%
     sg_axis_x(tick_interval = 20)
   sga <- eval(parse(text = paste0(" sg %>% ", annotations))) 
  # sga <- sga %>% sg_annotate(label = txt['descr', lang], x = as.Date("1855-01-01"), y = 2000000, color = 'black', size = "18")
@@ -111,7 +118,7 @@ for(lang in colnames(txt)) {
                      height = 110, offset = "zero", interactive = F) %>% 
     sg_fill_manual(values = c('#66717f', 'red')) %>%
     sg_axis_y(tick_format = ",%") %>%
-    sg_annotate(label = "Share of foreigners in the total population", x = as.Date("1852-01-01"), y = 0.22, color = '#2F343B', size = 15)
+    sg_annotate(label = txt['title2', lang], x = as.Date("1852-01-01"), y = 0.22, color = '#2F343B', size = 15)
   
   #sgb
   sgb$sizingPolicy$browser$defaultWidth <- "100%"

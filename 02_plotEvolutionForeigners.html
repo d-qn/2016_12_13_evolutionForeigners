@@ -140,31 +140,40 @@ $(document).ready(function () {
 <li>La Suisse est l’un des pays qui compte la plus forte proportion d’étrangers (24,6% en 2015) sur son territoire. Seuls quelques cas particuliers, tels que les pays pétroliers ou des Cités-États comme le Luxembourg, présentent des pourcentages encore plus élevés que la Suisse.</li>
 <li>plus de 80% des étrangers établis en Suisse proviennent de pays européens. Les ressortissants d’Allemagne, d’Italie, du Portugal et de France constituent à eux seuls près de la moitié des étrangers résidant en Suisse.</li>
 </ul>
+</div>
+<div id="note-about-streamgraphr" class="section level2">
+<h2>Note about streamgraphR</h2>
+<ul>
+<li>Streams can be ordered with passing a sorted factor categorey. However streamgraph’s manual colors is based on the alphabetical order of the categories</li>
+</ul>
 <pre class="r"><code>data.read &lt;- read.csv(foreigner.file)
 txt &lt;- loadTranslation(translation.file)</code></pre>
-<pre><code>## Warning in loadTranslation(translation.file): FR DE  IT  PT  AR  RU  ES  JA  ZH languages will be discarded!</code></pre>
+<pre><code>## Warning in loadTranslation(translation.file): DE IT  PT  AR  RU  ES  JA  ZH languages will be discarded!</code></pre>
 <pre><code>## 
-##  Remaining column names:  EN</code></pre>
+##  Remaining column names:  EN FR</code></pre>
 <pre class="r"><code>for(lang in colnames(txt)) {
   ddd &lt;- data.read
   
   stopifnot(nrow(nationality) == length(unique(ddd$nationality)), all(ddd$nationality %in% nationality$key))
   ddd$nationality &lt;- factor(txt[as.character(ddd$nationality), lang], levels = txt[nationality$key, lang])
   stopifnot(!any(is.na(ddd$nationality)))
-  #ddd$nationality &lt;- factor(ddd$nationality, levels = nationality$key) 
-  #ddd %&lt;&gt;% filter(nationality != &quot;Unknown&quot;)
 
   annot &lt;- nationality %&gt;% filter(!is.na(x))
   annot$key &lt;- txt[annot$key, lang]
   
   annotations &lt;- apply(annot, 1, function(l) {
-    paste0(&quot;sg_annotate(label = '&quot;, l['key'], &quot;', x = '&quot;, as.Date( l['x'], format = &quot;%Y&quot;), &quot;', y = &quot;, as.numeric(l['y']), &quot;, color = '&quot;, l['colannot'], &quot;', size = '&quot;,  l['size'], &quot;')&quot;)
+   # paste0(&quot;sg_annotate(label = '&quot;, l['key'], &quot;', x = '&quot;, as.Date( l['x'], format = &quot;%Y&quot;), &quot;', y = &quot;, as.numeric(l['y']), &quot;, color = '&quot;, l['colannot'], &quot;')&quot;)
+    paste0(&quot;sg_annotate(label = \&quot;&quot;, l['key'], &quot;\&quot;, x = '&quot;, as.Date( l['x'], format = &quot;%Y&quot;), &quot;', y = &quot;, as.numeric(l['y']), &quot;, color = '&quot;, l['colannot'], &quot;', size = '&quot;,  l['size'], &quot;')&quot;)
   })
   annotations &lt;- paste0(annotations, collapse = &quot; %&gt;% &quot;)
   
+  # order the colors to assume alphabetical ordering of the categories
+  col.idx &lt;- match(sort(txt[nationality$key, lang]), txt[nationality$key, lang])
+  
+  
   ## 1st streamgraph : foreigners layers are stacked based on the levels
   sg &lt;- streamgraph(ddd, nationality, value, year, top = sg_trbl[1], right = sg_trbl[2], bottom = sg_trbl[3], left = sg_trbl[4], height = 550) %&gt;%
-    sg_fill_manual(values = nationality$col) %&gt;%
+    sg_fill_manual(values = nationality$col[col.idx]) %&gt;%
     sg_axis_x(tick_interval = 20)
   sga &lt;- eval(parse(text = paste0(&quot; sg %&gt;% &quot;, annotations))) 
  # sga &lt;- sga %&gt;% sg_annotate(label = txt['descr', lang], x = as.Date(&quot;1855-01-01&quot;), y = 2000000, color = 'black', size = &quot;18&quot;)
@@ -192,7 +201,7 @@ txt &lt;- loadTranslation(translation.file)</code></pre>
                      height = 110, offset = &quot;zero&quot;, interactive = F) %&gt;% 
     sg_fill_manual(values = c('#66717f', 'red')) %&gt;%
     sg_axis_y(tick_format = &quot;,%&quot;) %&gt;%
-    sg_annotate(label = &quot;Share of foreigners in the total population&quot;, x = as.Date(&quot;1852-01-01&quot;), y = 0.22, color = '#2F343B', size = 15)
+    sg_annotate(label = txt['title2', lang], x = as.Date(&quot;1852-01-01&quot;), y = 0.22, color = '#2F343B', size = 15)
   
   #sgb
   sgb$sizingPolicy$browser$defaultWidth &lt;- &quot;100%&quot;
