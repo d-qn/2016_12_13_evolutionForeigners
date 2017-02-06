@@ -162,14 +162,12 @@ txt &lt;- loadTranslation(translation.file)</code></pre>
   annot$key &lt;- txt[annot$key, lang]
   
   annotations &lt;- apply(annot, 1, function(l) {
-   # paste0(&quot;sg_annotate(label = '&quot;, l['key'], &quot;', x = '&quot;, as.Date( l['x'], format = &quot;%Y&quot;), &quot;', y = &quot;, as.numeric(l['y']), &quot;, color = '&quot;, l['colannot'], &quot;')&quot;)
     paste0(&quot;sg_annotate(label = \&quot;&quot;, l['key'], &quot;\&quot;, x = '&quot;, as.Date( l['x'], format = &quot;%Y&quot;), &quot;', y = &quot;, as.numeric(l['y']), &quot;, color = '&quot;, l['colannot'], &quot;', size = '&quot;,  l['size'], &quot;')&quot;)
   })
   annotations &lt;- paste0(annotations, collapse = &quot; %&gt;% &quot;)
   
   # order the colors to assume alphabetical ordering of the categories
   col.idx &lt;- match(sort(txt[nationality$key, lang]), txt[nationality$key, lang])
-  
   
   ## 1st streamgraph : foreigners layers are stacked based on the levels
   sg &lt;- streamgraph(ddd, nationality, value, year, top = sg_trbl[1], right = sg_trbl[2], bottom = sg_trbl[3], left = sg_trbl[4], height = 550) %&gt;%

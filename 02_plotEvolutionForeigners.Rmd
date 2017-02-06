@@ -53,8 +53,8 @@ sg_trbl <- c(7, 10, 29, 64)
 
 nationality <- data.frame(
   key =     c("Africa",  "Americas", "Asia",    'Oceania', "Unknown",   "Austria", "Turkey",  "Spain",   "France",   "Portugal", "Ex-Yugoslavia", "Germany", "Italy", "Other European country"),
-  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#2b2b55", "#b3cccc", "#5879a3", "#303e6c",  "#87a1b8",  "#9db6c2",       "#708dad",  "#345284","#d9e6f2"),
-  colannot = c('#844F2F', '#bbdddd', '#5a2626', "white", "white",       "#ddddee"   , '#334d4d' , '#283F65', '#C9D6D6', '#304E75', '#3b535e',       'white', 'white', '#36404a'),
+  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#b3cccc", "#C87963", "#5879a3", "#303e6c",  "#87a1b8",  "#9db6c2",       "#708dad",  "#345284","#d9e6f2"),
+  colannot = c('#844F2F', '#bbdddd', '#5a2626', "white", "white",       "#5c8a8a"   , '#713828' , '#283F65', '#C9D6D6', '#304E75', '#3b535e',       'white', 'white', '#36404a'),
   x =       c(1995,      1994,        1998,      NA,         NA,         1907,        1992,      1970,      1995,        1996,      1986,            1907,      1967,     1975 ),
   y =       c(300000,        375000,     435000,   NA,         NA,         790000,        575000,    714000,    720000,      810000,    1050000,       1030000,     1250000,  1750000),
   size =    c('0.8em',   '0.8em',      '0.8em',  NA,        NA,          '0.75em',      '0.72em',   '0.72em',   '0.72em',   '0.85em',  '0.95em',         '1.3em',      '1.3em',   '1em' )
