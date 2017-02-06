@@ -79,14 +79,12 @@ for(lang in colnames(txt)) {
   annot$key <- txt[annot$key, lang]
   
   annotations <- apply(annot, 1, function(l) {
-   # paste0("sg_annotate(label = '", l['key'], "', x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "')")
     paste0("sg_annotate(label = \"", l['key'], "\", x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "', size = '",  l['size'], "')")
   })
   annotations <- paste0(annotations, collapse = " %>% ")
   
   # order the colors to assume alphabetical ordering of the categories
   col.idx <- match(sort(txt[nationality$key, lang]), txt[nationality$key, lang])
-  
   
   ## 1st streamgraph : foreigners layers are stacked based on the levels
   sg <- streamgraph(ddd, nationality, value, year, top = sg_trbl[1], right = sg_trbl[2], bottom = sg_trbl[3], left = sg_trbl[4], height = 550) %>%
