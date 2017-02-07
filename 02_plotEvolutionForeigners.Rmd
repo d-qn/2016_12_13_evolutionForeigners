@@ -22,6 +22,9 @@ output: html_document
 
 * Streams can be ordered with passing a sorted factor categorey. However streamgraph's manual colors is based on the alphabetical order of the categories
 
+<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
 ```{r setup, include=FALSE, message=F}
 foreigner.file <-  'input/merged_foreigners_1850_2015.csv'
@@ -75,20 +78,21 @@ for(lang in colnames(txt)) {
   ddd$nationality <- factor(txt[as.character(ddd$nationality), lang], levels = txt[nationality$key, lang])
   stopifnot(!any(is.na(ddd$nationality)))
 
-  annot <- nationality %>% filter(!is.na(x))
+  annot <- nationality 
   annot$key <- txt[annot$key, lang]
   
-  annotations <- apply(annot, 1, function(l) {
+  annotations <- apply(annot %>% filter(!is.na(x)), 1, function(l) {
     paste0("sg_annotate(label = \"", l['key'], "\", x = '", as.Date( l['x'], format = "%Y"), "', y = ", as.numeric(l['y']), ", color = '", l['colannot'], "', size = '",  l['size'], "')")
   })
   annotations <- paste0(annotations, collapse = " %>% ")
   
   # order the colors to assume alphabetical ordering of the categories
+  # and remove accents!
   col.idx <- match(sort(txt[nationality$key, lang]), txt[nationality$key, lang])
   
   ## 1st streamgraph : foreigners layers are stacked based on the levels
   sg <- streamgraph(ddd, nationality, value, year, top = sg_trbl[1], right = sg_trbl[2], bottom = sg_trbl[3], left = sg_trbl[4], height = 550) %>%
-    sg_fill_manual(values = nationality$col[col.idx]) %>%
+    sg_fill_manual(values = annot$col[col.idx]) %>%
     sg_axis_x(tick_interval = 20)
   sga <- eval(parse(text = paste0(" sg %>% ", annotations))) 
  # sga <- sga %>% sg_annotate(label = txt['descr', lang], x = as.Date("1855-01-01"), y = 2000000, color = 'black', size = "18")
@@ -139,7 +143,7 @@ for(lang in colnames(txt)) {
   save_html(
     tags$html(
      tags$head(
-       HTML(paste0("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>",
+       HTML(paste0("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'> <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>",
        paste0(header, collapse =""), collapse =""))),
           tags$body(
           h2(HTML(txt['main.title', lang])),

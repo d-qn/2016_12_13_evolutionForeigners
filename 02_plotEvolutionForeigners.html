@@ -146,11 +146,12 @@ $(document).ready(function () {
 <ul>
 <li>Streams can be ordered with passing a sorted factor categorey. However streamgraph’s manual colors is based on the alphabetical order of the categories</li>
 </ul>
+<p><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> <meta name="viewport" content="width=device-width, initial-scale=1.0"></p>
 <pre class="r"><code>data.read &lt;- read.csv(foreigner.file)
 txt &lt;- loadTranslation(translation.file)</code></pre>
-<pre><code>## Warning in loadTranslation(translation.file): DE IT  PT  AR  RU  ES  JA  ZH languages will be discarded!</code></pre>
+<pre><code>## Warning in loadTranslation(translation.file): AR JA languages will be discarded!</code></pre>
 <pre><code>## 
-##  Remaining column names:  EN FR</code></pre>
+##  Remaining column names:  EN FR DE IT PT RU ES ZH</code></pre>
 <pre class="r"><code>for(lang in colnames(txt)) {
   ddd &lt;- data.read
   
@@ -158,20 +159,21 @@ txt &lt;- loadTranslation(translation.file)</code></pre>
   ddd$nationality &lt;- factor(txt[as.character(ddd$nationality), lang], levels = txt[nationality$key, lang])
   stopifnot(!any(is.na(ddd$nationality)))
 
-  annot &lt;- nationality %&gt;% filter(!is.na(x))
+  annot &lt;- nationality 
   annot$key &lt;- txt[annot$key, lang]
   
-  annotations &lt;- apply(annot, 1, function(l) {
+  annotations &lt;- apply(annot %&gt;% filter(!is.na(x)), 1, function(l) {
     paste0(&quot;sg_annotate(label = \&quot;&quot;, l['key'], &quot;\&quot;, x = '&quot;, as.Date( l['x'], format = &quot;%Y&quot;), &quot;', y = &quot;, as.numeric(l['y']), &quot;, color = '&quot;, l['colannot'], &quot;', size = '&quot;,  l['size'], &quot;')&quot;)
   })
   annotations &lt;- paste0(annotations, collapse = &quot; %&gt;% &quot;)
   
   # order the colors to assume alphabetical ordering of the categories
+  # and remove accents!
   col.idx &lt;- match(sort(txt[nationality$key, lang]), txt[nationality$key, lang])
   
   ## 1st streamgraph : foreigners layers are stacked based on the levels
   sg &lt;- streamgraph(ddd, nationality, value, year, top = sg_trbl[1], right = sg_trbl[2], bottom = sg_trbl[3], left = sg_trbl[4], height = 550) %&gt;%
-    sg_fill_manual(values = nationality$col[col.idx]) %&gt;%
+    sg_fill_manual(values = annot$col[col.idx]) %&gt;%
     sg_axis_x(tick_interval = 20)
   sga &lt;- eval(parse(text = paste0(&quot; sg %&gt;% &quot;, annotations))) 
  # sga &lt;- sga %&gt;% sg_annotate(label = txt['descr', lang], x = as.Date(&quot;1855-01-01&quot;), y = 2000000, color = 'black', size = &quot;18&quot;)
@@ -222,7 +224,7 @@ txt &lt;- loadTranslation(translation.file)</code></pre>
   save_html(
     tags$html(
      tags$head(
-       HTML(paste0(&quot;&lt;link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&amp;subset=latin,cyrillic' rel='stylesheet' type='text/css'&gt; &lt;meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'&gt;&quot;,
+       HTML(paste0(&quot;&lt;link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&amp;subset=latin,cyrillic' rel='stylesheet' type='text/css'&gt; &lt;meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'&gt;&quot;,
        paste0(header, collapse =&quot;&quot;), collapse =&quot;&quot;))),
           tags$body(
           h2(HTML(txt['main.title', lang])),
