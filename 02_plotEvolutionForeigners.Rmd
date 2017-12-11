@@ -22,9 +22,12 @@ output: html_document
 
 * Streams can be ordered with passing a sorted factor categorey. However streamgraph's manual colors is based on the alphabetical order of the categories
 
-<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+## Note about responsiveness
+** If the widget does not resize, it is important to set**
+  * widget$sizingPolicy$defaultWidth <- "100%"
+  * sgb$sizingPolicy$padding <- 1**
+**And also in the header**
 <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
 ```{r setup, include=FALSE, message=F}
 foreigner.file <-  'input/merged_foreigners_1850_2015.csv'
@@ -97,8 +100,8 @@ for(lang in colnames(txt)) {
   sga <- eval(parse(text = paste0(" sg %>% ", annotations))) 
  # sga <- sga %>% sg_annotate(label = txt['descr', lang], x = as.Date("1855-01-01"), y = 2000000, color = 'black', size = "18")
   
-  sga$sizingPolicy$browser$defaultWidth <- "100%"
-  sga$sizingPolicy$browser$padding <- 1
+  sga$sizingPolicy$defaultWidth <- "100%"
+  sga$sizingPolicy$padding <- 1
   #sg
   saveWidget(sga, file = "streamgraph_tmp.html", selfcontained = FALSE, libdir = "js")
   html.grabbed <- grab_widgetHTML("streamgraph_tmp.html")
@@ -123,8 +126,8 @@ for(lang in colnames(txt)) {
     sg_annotate(label = txt['title2', lang], x = as.Date("1852-01-01"), y = 0.22, color = '#2F343B', size = 15)
   
   #sgb
-  sgb$sizingPolicy$browser$defaultWidth <- "100%"
-  sgb$sizingPolicy$browser$padding <- 1
+  sgb$sizingPolicy$defaultWidth <- "100%"
+  sgb$sizingPolicy$padding <- 1
   saveWidget(sgb, file = "streamgraph2_tmp.html", selfcontained = FALSE, libdir = "js")
   html.grabbed2 <- grab_widgetHTML("streamgraph2_tmp.html")
   

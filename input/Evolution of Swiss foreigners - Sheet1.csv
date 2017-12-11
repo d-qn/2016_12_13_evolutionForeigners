@@ -1,24 +1,36 @@
 code,EN,FR,DE,IT,PT,AR,RU,ES,JA,ZH
-main.title,Switzerland's history as an immigration destination,"La Suisse, terre d'immigration historique pour ses voisins","Die Schweiz, ein historisches Einwanderungsland für ihre Nachbarn","Svizzera, terra d'immigrazione storica per i suoi vicini",A história da Suíça como terra de imigração para seus vizinhos,,Швейцария — страна иммигрантов из стран близких и далеких,"Suiza, tierra de inmigración para sus vecinos a lo largo de la historia",,瑞士有着吸引邻国移民的历史 
-descr,"Total number of foreigners in Switzerland from 1850 to 2015, by country or region of citizenship. Hover to see details.","Population étrangère totale en Suisse de 1850 à 2015, selon le pays ou la région d'origine. Placez votre curseur sur une courbe pour obtenir plus de détails.","Anzahl Ausländer in der Schweiz zwischen 1850 und 2015, nach Nationalität oder Herkunftsregion. Für mehr Details fahren Sie mit dem Cursor über die Kurve.","Popolazione straniera totale in Svizzera dal 1850 al 2015, secondo il paese o la regione d'origine. Puntate il mouse su una curva per vedere tutti i dettagli.","Número total de estrangeiros na Suíça de 1850 a 2015, por país ou região de cidadania. Passe para ver detalhes.",,"Число иностранцев в Швейцарии в период с 1850 по 2015 годы, по национальности и региону происхождения. Чтобы получить больше информации проведите курсором вдоль графика.","Población extranjera en Suiza de 1850 y 2015, según el país o la región de origen. Sitúe el cursor sobre una curba para ver los detalles.",,从1850-2015年，根据国籍和来源国，瑞士的外国人数量。请移动光标查看具体信息
-descr2,"Note: Stream's thickness denotes the number of foreigners over time, not the stream's direction",Note: l'épaisseur (et non la direction) des courbes représente le nombre d'étrangers ,Bemerkung: Die Stärke (und nicht die Richtung) der Kurven entspricht der Anzahl Ausländer,Nota: lo spessore (non la direzione) delle curve rappresenta il numero di stranieri,"Nota: A espessura da curva denota o número de estrangeiros ao longo do tempo, e não a direção do fluxo",,"Примечание: число иностранцев отражено толщиной графика, а не его направлением.",Anotación: El espesor (y no la dirección) de las curvas representa el número de extranjeros,,注意：曲线的弧度(而不是方向)代表外国人的数量
-h3,165 years of immigration to Switzerland,165 années d'immigration en Suisse,165 Jahre Einwanderung in die Schweiz,165 anni d'immigrazione in Svizzera,165 anos de imigração na Suíça,,165 лет иммиграции в Швейцарию,165 años de inmigración en Suiza,,165年来瑞士的移民情况
-title2,Percentage of foreigners in the total population,Proportion d'étrangers dans la population totale,Anteil Ausländer an der Gesamtbevölkerung,Proporzione di stranieri nella popolazione totale,Proporção de estrangeiros na população total,,Доля иностранцев в общем населении Швейцарии,Proporción de extranjeros de la población total,,外国人占总人口的百分比
-footer,"*Former Yugoslavia: Serbia, Croatia, Bosnia and Herzegovina, Slovenia, Montenegro, Kosovo and Macedonia","*Ex-Yougoslavie: Serbie, Croatie, Bosnie-Herzégovine, Slovénie, Monténégro, Kosovo et Macédoine ","*Ex-Jugoslawien: Serbien, Kroatien, Bosnien-Herzegowina, Slowenien, Montenegro, Kosovo und Mazedonien","*Ex-Jugoslavia: Serbia, Croazia, Bosnia-Erzegovina, Slovenia, Montenegro, Kosovo e Macedonia","* Ex-Iugoslávia: Sérvia, Croácia, Bósnia e Herzegovina, Eslovênia, Montenegro, Kosovo e Macedônia",,"*Бывшая Югославия: Сербия, Хорватия, БиГ, Словения, Черногория, Косово, Македония","*Antigua Yugoslavia: Serbia, Croacia, Bosnia-Herzegovina, Eslovenia, Montenegro, Kosovo y Macedonia",,*前南斯拉夫国家：塞尔维亚，克罗地亚，波斯尼亚和黑塞哥维那，斯洛文尼亚，黑山，科索沃和马其顿
-Africa,Africa,Afrique,Afrika,Africa,África,,Африка,África,,非洲
-Americas,Americas,Amériques,Amerika (N+S),America (N+S),Américas,,С. и Ю. Америка,Américas,,美洲(南、北)
-Asia,Asia,Asie,Asien,Asia,Ásia,,Азия,Asia,,亚洲
-Oceania,Oceania,Océanie,Ozeanien,Oceania,Oceania,,Океания,Oceanía,,大洋洲
-Unknown,Unknown,Inconnu,Unbekannt,Sconosciuto,Desconhecido,,Нет данных,Desconocido,,不知名地区
-Austria,Austria,Autriche,Österreich,Austria,Áustria,,Австрия,Austria,,奥地利
-Turkey,Turkey,Turquie,Türkei,Turchia,Peru,,Турция,Turquía,,土耳其
-Spain,Spain,Espagne,Spanien,Spagna,Espanha,,Испания,España,,西班牙
-France,France,France,Frankreich,Francia,França,,Франция,Francia,,法国
-Portugal,Portugal,Portugal,Portugal,Portogallo,Portugal,,Португалия,Portugal,,葡萄牙
-Ex-Yugoslavia,Former Yugoslavia*,Ex-Yougoslavie*,Ex-Jugoslawien*,Ex-Jugoslavia*,Ex-Iugoslávia *,,Бывш. Югославия,Antigua Yugoslavia*,,前南斯拉夫*
-Germany,Germany,Allemagne,Deutschland,Germania,Alemanha,,Германия,Alemania,,德国
-Italy,Italy,Italie,Italien,Italia,Itália,,Италия,Italia,,意大利
-Other European country,Other European country,Autres pays d'Europe,Andere europäische Länder,Altri paesi europei,Outro país europeu,,Другие страны Европы,Otros países europeos,,其他欧洲国家
+main.title,Switzerland's history as an immigration destination,"La Suisse, terre d'immigration historique pour ses voisins","Die Schweiz, ein historisches Einwanderungsland für ihre Nachbarn","Svizzera, terra d'immigrazione storica per i suoi vicini",A história da Suíça como terra de imigração para seus vizinhos,تاريخ سويسرا كوجهة للهجرة,Швейцария — страна иммигрантов из стран близких и далеких,"Suiza, tierra de inmigración para sus vecinos a lo largo de la historia",歴史的に隣国からの移民が多いスイス,瑞士有着吸引邻国移民的历史 
+descr,"Total number of foreigners in Switzerland from 1850 to 2015, by country or region of citizenship. Hover to see details.","Population étrangère totale en Suisse de 1850 à 2015, selon le pays ou la région d'origine. Placez votre curseur sur une courbe pour obtenir plus de détails.","Anzahl Ausländer in der Schweiz zwischen 1850 und 2015, nach Nationalität oder Herkunftsregion. Für mehr Details fahren Sie mit dem Cursor über die Kurve.","Popolazione straniera totale in Svizzera dal 1850 al 2015, secondo il paese o la regione d'origine. Puntate il mouse su una curva per vedere tutti i dettagli.","Número total de estrangeiros na Suíça de 1850 a 2015, por país ou região de cidadania. Passe para ver detalhes.",مجمل عدد الأجانب في سويسرا ما بين 1850ـ2015 حسب الجنسية أو البلد الأصلي. لمزيد من التفاصيل حرك الفأرة.,"Число иностранцев в Швейцарии в период с 1850 по 2015 годы, по национальности и региону происхождения. Чтобы получить больше информации проведите курсором вдоль графика.","Población extranjera en Suiza de 1850 y 2015, según el país o la región de origen. Sitúe el cursor sobre una curva para ver los detalles.",国籍および出身地域別にみた、スイスの外国人の割合（１８５０～２０１５年）。詳細をみるにはカーソルを曲線に合わせてください,从1850-2015年，根据国籍和来源国，瑞士的外国人数量。请移动光标查看具体信息
+descr2,"Note: Stream's thickness denotes the number of foreigners over time, not the stream's direction",Note: l'épaisseur (et non la direction) des courbes représente le nombre d'étrangers ,Bemerkung: Die Stärke (und nicht die Richtung) der Kurven entspricht der Anzahl Ausländer,Nota: lo spessore (non la direzione) delle curve rappresenta il numero di stranieri,"Nota: A espessura da curva denota o número de estrangeiros ao longo do tempo, e não a direção do fluxo",سمك المؤشر وليس اتجاهه يدل على عدد الأجانب,"Примечание: число иностранцев отражено толщиной графика, а не его направлением.",Anotación: El espesor (y no la dirección) de las curvas representa el número de extranjeros,注：曲線の膨らみ（方向ではない）は外国人の数を表す。,注意：曲线的弧度(而不是方向)代表外国人的数量
+h3,165 years of immigration to Switzerland,165 années d'immigration en Suisse,165 Jahre Einwanderung in die Schweiz,165 anni d'immigrazione in Svizzera,165 anos de imigração na Suíça,165 عاما من تاريخ الهجرة إلى سويسرا,165 лет иммиграции в Швейцарию,165 años de inmigración en Suiza,"
+
+スイスへの移住　１６５年の歴史
+
+",165年来瑞士的移民情况
+title2,Percentage of foreigners in the total population,Proportion d'étrangers dans la population totale,Anteil Ausländer an der Gesamtbevölkerung,Proporzione di stranieri nella popolazione totale,Proporção de estrangeiros na população total,النسبة المئوية للمهاجرين من مجمل عدد السكان,Доля иностранцев в общем населении Швейцарии,Proporción de extranjeros de la población total,総人口に占める外国人の割合,外国人占总人口的百分比
+footer,"*Former Yugoslavia: Serbia, Croatia, Bosnia and Herzegovina, Slovenia, Montenegro, Kosovo and Macedonia","*Ex-Yougoslavie: Serbie, Croatie, Bosnie-Herzégovine, Slovénie, Monténégro, Kosovo et Macédoine ","*Ex-Jugoslawien: Serbien, Kroatien, Bosnien-Herzegowina, Slowenien, Montenegro, Kosovo und Mazedonien","*Ex-Jugoslavia: Serbia, Croazia, Bosnia-Erzegovina, Slovenia, Montenegro, Kosovo e Macedonia","* Ex-Iugoslávia: Sérvia, Croácia, Bósnia e Herzegovina, Eslovênia, Montenegro, Kosovo e Macedônia",يوغوسلافيا السابقة: صربيا، كرواتيا، البوسنة والهرسك، سلوفينيا، الجبل الأسود وكوسوفو ومقدونيا.,"*Бывшая Югославия: Сербия, Хорватия, БиГ, Словения, Черногория, Косово, Македония","*Antigua Yugoslavia: Serbia, Croacia, Bosnia-Herzegovina, Eslovenia, Montenegro, Kosovo y Macedonia","
+
+*旧ユーゴスラビア諸国：セルビア、クロアチア、ボスニア・ヘルツェゴビナ、スロベニア、モンテネグロ、コソボ、マケドニア
+
+",*前南斯拉夫国家：塞尔维亚，克罗地亚，波斯尼亚和黑塞哥维那，斯洛文尼亚，黑山，科索沃和马其顿
+Africa,Africa,Afrique,Afrika,Africa,África,إفريقيا,Африка,África,アフリカ,非洲
+Americas,Americas,Amériques,Amerika (N+S),America (N+S),Américas,الأمريكتان,С. и Ю. Америка,Américas,米国,美洲(南、北)
+Asia,Asia,Asie,Asien,Asia,Ásia,آسيا,Азия,Asia,アジア,亚洲
+Oceania,Oceania,Océanie,Ozeanien,Oceania,Oceania,أوقيانوسيا,Океания,Oceanía,オセアニア,大洋洲
+Unknown,Unknown,Inconnu,Unbekannt,Sconosciuto,Desconhecido,غير معروفة,Нет данных,Desconocido,不明,不知名地区
+Austria,Austria,Autriche,Österreich,Austria,Áustria,النمسا,Австрия,Austria,オーストリア,奥地利
+Turkey,Turkey,Turquie,Türkei,Turchia,Peru,تركيا,Турция,Turquía,トルコ,土耳其
+Spain,Spain,Espagne,Spanien,Spagna,Espanha,إسبانيا,Испания,España,スペイン,西班牙
+France,France,France,Frankreich,Francia,França,فرنسا,Франция,Francia,フランス,法国
+Portugal,Portugal,Portugal,Portugal,Portogallo,Portugal,البرتغال,Португалия,Portugal,ポルトガル,葡萄牙
+Ex-Yugoslavia,Former Yugoslavia*,Ex-Yougoslavie*,Ex-Jugoslawien*,Ex-Jugoslavia*,Ex-Iugoslávia *,يوغوسلافيا السابقة,Бывш. Югославия,Antigua Yugoslavia*,旧ユーゴスラビア諸国,前南斯拉夫*
+Germany,Germany,Allemagne,Deutschland,Germania,Alemanha,ألمانيا,Германия,Alemania,ドイツ,德国
+Italy,Italy,Italie,Italien,Italia,Itália,إيطاليا,Италия,Italia,イタリア,意大利
+Other European country,Other European country,Autres pays d'Europe,Andere europäische Länder,Altri paesi europei,Outro país europeu,دول أوروبية أخرى,Другие страны Европы,Otros países europeos,その他の欧州諸国,其他欧洲国家
 source,Source,source,Quelle,Fonte,Fonte,المصدر,Источник,Fuente,出典,来源
-source.name,Federal Statistical Office,Office fédéral de la statistique,Bundesamt für Statistik,Ufficio federale di statistica,Secretaria Federal de Estatísticas da Suíça,,Федеральное ведомство статистики Швейцарии (BfS),Oficina Federal de Estadística,,瑞士联邦统计局 
+source.name,Federal Statistical Office,Office fédéral de la statistique,Bundesamt für Statistik,Ufficio federale di statistica,Secretaria Federal de Estatísticas da Suíça,المكتب الإحصائي الفدرالي,Федеральное ведомство статистики Швейцарии (BfS),Oficina Federal de Estadística,"
+
+連邦統計局
+
+",瑞士联邦统计局 
 code,Code,code,Code,Codice,Código,الرمز,Код,código,コード,代码
