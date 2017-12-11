@@ -1,17 +1,21 @@
 ---
 title: "Merge data"
 author: "Duc-Quang Nguyen | swissinfo.ch"
-date: " 2016"
+date: " 2017"
 output: 
   html_document:
-    toc: true
+    code_folding: show
+    echo: TRUE
+    warning: FALSE
+    message: FALSE
+    toc: yes
     toc_depth: 3
     theme: simplex
 ---
 
 # Data
 
-* Depuis 2010: [Permanent and non permanent resident population by canton, sex, residence permit, age class and citizenship](https://www.pxweb.bfs.admin.ch/Selection.aspx?px_language=en&px_db=px-x-0103010000_101&px_tableid=px-x-0103010000_101%5Cpx-x-0103010000_101.px&px_type=PX) [Complete px cube](https://www.pxweb.bfs.admin.ch/DownloadFile.aspx?file=px-x-0103010000_101)
+* Depuis 2010: [Permanent and non permanent resident population by canton, sex, residence permit, age class and citizenship](https://www.pxweb.bfs.admin.ch/pxweb/en/px-x-0103010000_101/-/px-x-0103010000_101.px) [Complete px cube](https://www.pxweb.bfs.admin.ch/DownloadFile.aspx?file=px-x-0103010000_101)
   * the whole dataset is huge. STAT-TAB query
       * Select all years
       * Select only Switzerland
@@ -139,7 +143,7 @@ stopifnot((chka - chkb) == check.diff)
 ## Data from 2010
 
 ```{r wrangle data from 2010 onwards}
-data.read <- read_tsv(natpop.file2, skip = 2, locale = locale(encoding = "latin1"))
+data.read <- read_csv(natpop.file2, skip = 2, locale = locale(encoding = "latin1"))
 
 # drop & merge pop type
 data.read %<>% select(-Canton, -`Population type`) %>%

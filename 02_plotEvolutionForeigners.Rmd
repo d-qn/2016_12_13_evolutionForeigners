@@ -30,8 +30,9 @@ output: html_document
 <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
 
 ```{r setup, include=FALSE, message=F}
-foreigner.file <-  'input/merged_foreigners_1850_2015.csv'
-swiss.file <- 'input/merged_Swisssforeigners_1850_2015.csv'
+cleanOutput <- T
+foreigner.file <-  'input/merged_foreigners_1850_2016.csv'
+swiss.file <- 'input/merged_Swisssforeigners_1850_2016.csv'
 
 translation.file <- "input/Evolution of Swiss foreigners - Sheet1.csv"
 
@@ -145,10 +146,11 @@ for(lang in colnames(txt)) {
   
   save_html(
     tags$html(
-     tags$head(
-       HTML(paste0("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'> <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>",
+        dir = ifelse(lang == "AR", "rtl", "ltr"),
+        tags$head(
+          HTML(paste0("<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'> <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>",
        paste0(header, collapse =""), collapse =""))),
-          tags$body(
+        tags$body(
           h2(HTML(txt['main.title', lang])),
           div(class = "descr", HTML(paste0(txt['descr', lang], " <em>", txt['descr2', lang], "</em>"))),
           h3(HTML(txt['h3', lang])),
@@ -162,7 +164,26 @@ for(lang in colnames(txt)) {
   swi_libWidget_overwrite()  
 }
   
-
 ```
+
+
+```{r move production graphics}
+if(cleanOutput) {
+  files <- c("streamgraph_foreignersEvolution_.*html", "js")
+
+  if(!dir.exists("output/bak")) {
+    dir.create("output/bak")
+  } else {
+    list.files("output/bak/", full.names = T, recursive = T) %>% file.remove()
+  }
+  ori.files <- list.files("output", full.names = T)[list.files("output") != "bak"]
+  file.copy(ori.files, to = "output/bak/", recursive = T)
+  unlink(ori.files, recursive = T)
+
+  files_tomove <- lapply(files, function(x) list.files(pattern = x)) %>% unlist()
+  file.copy(files_tomove, "output", recursive = T)
+  unlink(files_tomove, recursive = T)
+}
+
 
 ```
