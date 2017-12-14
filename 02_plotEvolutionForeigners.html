@@ -146,10 +146,18 @@ $(document).ready(function () {
 <ul>
 <li>Streams can be ordered with passing a sorted factor categorey. However streamgraph’s manual colors is based on the alphabetical order of the categories</li>
 </ul>
-</div>
-<div id="note-about-responsiveness" class="section level2">
-<h2>Note about responsiveness</h2>
-<p>** If the widget does not resize, it is important to set<strong> * widget<span class="math inline">\(sizingPolicy\)</span>defaultWidth &lt;- “100%” * sgb<span class="math inline">\(sizingPolicy\)</span>padding &lt;- 1</strong> <strong>And also in the header</strong> <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></p>
+<div id="note-about-responsiveness" class="section level3">
+<h3>Note about responsiveness</h3>
+<p>** If the widget does not resize, it is important to set**</p>
+<ul>
+<li>widget<span class="math inline">\(sizingPolicy\)</span>defaultWidth &lt;- “100%”</li>
+<li>sgb<span class="math inline">\(sizingPolicy\)</span>padding &lt;- 1</li>
+</ul>
+<p><strong>And also in the header</strong></p>
+<div id="for-rtl" class="section level4">
+<h4>For RTL</h4>
+<p><strong>replace css and js by their RTL variants in swiRcharts</strong></p>
+<p><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></p>
 <pre class="r"><code>data.read &lt;- read.csv(foreigner.file)
 txt &lt;- loadTranslation(translation.file)</code></pre>
 <pre><code>## 
@@ -202,8 +210,8 @@ txt &lt;- loadTranslation(translation.file)</code></pre>
                      top = 6, right = sg_trbl[2], bottom = -2, left = sg_trbl[4], 
                      height = 110, offset = &quot;zero&quot;, interactive = F) %&gt;% 
     sg_fill_manual(values = c('#66717f', 'red')) %&gt;%
-    sg_axis_y(tick_format = &quot;,%&quot;) %&gt;%
-    sg_annotate(label = txt['title2', lang], x = as.Date(&quot;1852-01-01&quot;), y = 0.22, color = '#2F343B', size = 15)
+    sg_axis_y(tick_format = &quot;,%&quot;)# %&gt;%
+   # sg_annotate(label = txt['title2', lang], x = as.Date(&quot;2014-01-01&quot;), y = 0.012, color = '#e6f7ff', size = 15)
   
   #sgb
   sgb$sizingPolicy$defaultWidth &lt;- &quot;100%&quot;
@@ -231,137 +239,18 @@ txt &lt;- loadTranslation(translation.file)</code></pre>
        paste0(header, collapse =&quot;&quot;), collapse =&quot;&quot;))),
         tags$body(
           h2(HTML(txt['main.title', lang])),
-          div(class = &quot;descr&quot;, HTML(paste0(txt['descr', lang], &quot; &lt;em&gt;&quot;, txt['descr2', lang], &quot;&lt;/em&gt;&quot;))),
+          div(class = &quot;descr&quot;, HTML(paste0('&lt;img src=&quot;https://interactive.swissinfo.ch/assets/Interactive_icon.svg.png&quot; width=&quot;12&quot; align=&quot;top&quot;&gt;&amp;nbsp; ', txt['descr', lang], &quot; &lt;em&gt;&quot;, txt['descr2', lang], &quot;&lt;/em&gt;&quot;))),
           h3(HTML(txt['h3', lang])),
           div(class = &quot;container&quot;, HTML(html.code[html.grabbed[['istart']]:html.grabbed[['iend']]])),
+          h4(HTML( txt['title2', lang])),
           div(class = &quot;container&quot;, HTML(html.code2[html.grabbed2[['istart']]:html.grabbed2[['iend']]])),
           div(id = &quot;footer&quot;, HTML(txt['footer', lang])),
           div(id = &quot;cite&quot;, HTML(source)),
           HTML(iframeresizer)
       )), file = paste0(&quot;streamgraph_foreignersEvolution_&quot;, lang, &quot;.html&quot;), libdir = &quot;js&quot;
   )
-  swi_libWidget_overwrite()  
+  swi_libWidget_overwrite()
 }</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-
-## binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-binding-0.8.1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './js/streamgraph-1',
-## reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/bak/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
-<pre><code>## Warning in file.create(to[okay]): cannot create file './output/js/
-## streamgraph-1', reason 'Is a directory'</code></pre>
 <pre class="r"><code>if(cleanOutput) {
   files &lt;- c(&quot;streamgraph_foreignersEvolution_.*html&quot;, &quot;js&quot;)
 
@@ -378,6 +267,8 @@ txt &lt;- loadTranslation(translation.file)</code></pre>
   file.copy(files_tomove, &quot;output&quot;, recursive = T)
   unlink(files_tomove, recursive = T)
 }</code></pre>
+</div>
+</div>
 </div>
 
 

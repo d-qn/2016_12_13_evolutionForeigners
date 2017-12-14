@@ -149,7 +149,7 @@ HTMLWidgets.widget({
     if (params.interactive) {
 
       tooltip = svg.append("g")
-      .attr("transform", "translate(30,10)")
+      .attr("transform", "translate(220,20)")
       .append("text")
       .attr("class", "tooltip");
 

@@ -22,11 +22,19 @@ output: html_document
 
 * Streams can be ordered with passing a sorted factor categorey. However streamgraph's manual colors is based on the alphabetical order of the categories
 
-## Note about responsiveness
+### Note about responsiveness
+
 ** If the widget does not resize, it is important to set**
-  * widget$sizingPolicy$defaultWidth <- "100%"
-  * sgb$sizingPolicy$padding <- 1**
+
+* widget$sizingPolicy$defaultWidth <- "100%"
+* sgb$sizingPolicy$padding <- 1
+
 **And also in the header**
+
+#### For RTL
+
+**replace css and js by their RTL variants in swiRcharts**
+
 <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
 
 ```{r setup, include=FALSE, message=F}
@@ -59,11 +67,11 @@ library(streamgraph)
 sg_trbl <- c(7, 10, 29, 64)
 
 nationality <- data.frame(
-  key =     c("Africa",  "Americas", "Asia",    'Oceania', "Unknown",   "Austria", "Turkey",  "Spain",   "France",   "Portugal", "Ex-Yugoslavia", "Germany", "Italy", "Other European country"),
-  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#b3cccc", "#C87963", "#5879a3", "#303e6c",  "#87a1b8",  "#9db6c2",       "#708dad",  "#345284","#d9e6f2"),
-  colannot = c('#844F2F', '#bbdddd', '#5a2626', "white", "white",       "#5c8a8a"   , '#713828' , '#283F65', '#C9D6D6', '#304E75', '#3b535e',       'white', 'white', '#7a8c9f'),
-  x =       c(1995,      1994,        1998,      NA,         NA,         1907,        1992,      1970,      1995,        1996,      1986,            1907,      1967,     1973),
-  y =       c(300000,        375000,     435000,   NA,         NA,         790000,        575000,    714000,    720000,      810000,    1050000,       1025000,     1250000,  1720000),
+  key =     c("Africa",  "Americas", "Asia",    'Oceania', "Unknown",   "Austria",   "Turkey",   "Spain",   "France",   "Portugal", "Ex-Yugoslavia", "Germany", "Italy", "Other European country"),
+  col =     c("#ac673e", "#336666",  "#ab3d3f", "#996699", "#e5dbcd",   "#b3cccc",   "#C87963",  "#5879a3", "#303e6c",  "#87a1b8",  "#9db6c2",       "#708dad",  "#345284","#d9e6f2"),
+  colannot = c('#844F2F', '#99cccc', '#5a2626', "white", "white",       "#5c8a8a"   , '#713828' , '#283F65', '#C9D6D6', '#304E75', '#3b535e',       'white', 'white', '#7a8c9f'),
+  x =       c(2010,      2003,        2000,      NA,         NA,         1913,        2003,       1973,      2014.5,        2014,      2014,            1907,      1972,     2014),
+  y =       c(50000,        375000,     444000,   NA,         NA,         799000,        578000,    716000,    640000,      811000,    1070000,       1040000,     1250000,  1970000),
   size =    c('0.8em',   '0.8em',      '0.8em',  NA,        NA,          '0.75em',      '0.72em',   '0.72em',   '0.72em',   '0.85em',  '0.95em',         '1.3em',      '1.3em',   '1em' )
 , stringsAsFactors = F)
 
@@ -123,8 +131,8 @@ for(lang in colnames(txt)) {
                      top = 6, right = sg_trbl[2], bottom = -2, left = sg_trbl[4], 
                      height = 110, offset = "zero", interactive = F) %>% 
     sg_fill_manual(values = c('#66717f', 'red')) %>%
-    sg_axis_y(tick_format = ",%") %>%
-    sg_annotate(label = txt['title2', lang], x = as.Date("1852-01-01"), y = 0.22, color = '#2F343B', size = 15)
+    sg_axis_y(tick_format = ",%")# %>%
+   # sg_annotate(label = txt['title2', lang], x = as.Date("2014-01-01"), y = 0.012, color = '#e6f7ff', size = 15)
   
   #sgb
   sgb$sizingPolicy$defaultWidth <- "100%"
@@ -152,18 +160,20 @@ for(lang in colnames(txt)) {
        paste0(header, collapse =""), collapse =""))),
         tags$body(
           h2(HTML(txt['main.title', lang])),
-          div(class = "descr", HTML(paste0(txt['descr', lang], " <em>", txt['descr2', lang], "</em>"))),
+          div(class = "descr", HTML(paste0('<img src="https://interactive.swissinfo.ch/assets/Interactive_icon.svg.png" width="12" align="top">&nbsp; ', txt['descr', lang], " <em>", txt['descr2', lang], "</em>"))),
           h3(HTML(txt['h3', lang])),
           div(class = "container", HTML(html.code[html.grabbed[['istart']]:html.grabbed[['iend']]])),
+          h4(HTML( txt['title2', lang])),
           div(class = "container", HTML(html.code2[html.grabbed2[['istart']]:html.grabbed2[['iend']]])),
           div(id = "footer", HTML(txt['footer', lang])),
           div(id = "cite", HTML(source)),
           HTML(iframeresizer)
       )), file = paste0("streamgraph_foreignersEvolution_", lang, ".html"), libdir = "js"
   )
-  swi_libWidget_overwrite()  
+  swi_libWidget_overwrite()
 }
-  
+
+
 ```
 
 
